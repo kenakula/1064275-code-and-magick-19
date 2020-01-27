@@ -35,18 +35,21 @@ var renderText = function (ctx) {
     ctx.fillText(textLines[i], CLOUD_X + 2 * GAP, CLOUD_Y + 2 * GAP + (FONT_GAP + GAP) * i);
   }
 
-}
+};
 
 // получает максимальное число из массива
 
 var getMaxElement = function (arr) {
+  // проверяем крайний случай
+  if (arr.length === 1) {
+    return arr[0];
+  }
+
   var maxElement = arr[0];
 
-  if (arr.length > 1) {
-    for (var i = 1; i < arr.length; i++) {
-      if (arr[i] > maxElement) {
-        maxElement = arr[i];
-      }
+  for (var i = 1; i < arr.length; i++) {
+    if (arr[i] > maxElement) {
+      maxElement = arr[i];
     }
   }
 
@@ -61,13 +64,13 @@ var getColor = function () {
   return 'hsl(240, ' + saturation + '%, 50%)';
 };
 
-//функция отрисовки столбиков гистограммы
+// функция отрисовки столбиков гистограммы
 
 var renderBars = function (ctx, names, times) {
   for (var i = 0; i < names.length; i++) {
     // определяет максимальное время прохождения игры игроком
     var maxTime = Math.ceil(getMaxElement(times));
-    //определяет расстояние смещения
+    // определяет расстояние смещения
     var shift = Math.round(BAR_HEIGHT - (BAR_HEIGHT * times[i]) / maxTime);
     // пишет время над столбиком
     ctx.fillText(Math.ceil(times[i]), CLOUD_X + BAR_GAP + (BAR_WIDTH + BAR_GAP) * i, HYST_START + shift);
@@ -79,7 +82,7 @@ var renderBars = function (ctx, names, times) {
     ctx.fillStyle = '#000';
     ctx.fillText(names[i], CLOUD_X + BAR_GAP + (BAR_WIDTH + BAR_GAP) * i, CLOUD_HEIGHT - FONT_GAP);
   }
-}
+};
 
 // рендер статистики
 
