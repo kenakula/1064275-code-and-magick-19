@@ -22,6 +22,21 @@ var renderCloud = function (ctx, x, y, color) {
   ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
 };
 
+// функция отрисовки текста
+
+var renderText = function (ctx) {
+  var textLines = ['Ура, вы победили!', 'Список результатов:'];
+
+  ctx.font = '16px PT Mono';
+  ctx.fillStyle = '#000';
+  ctx.textBaseline = 'hanging';
+
+  for (var i = 0; i < textLines.length; i++) {
+    ctx.fillText(textLines[i], CLOUD_X + 2 * GAP, CLOUD_Y + 2 * GAP + (FONT_GAP + GAP) * i);
+  }
+
+}
+
 // получает максимальное число из массива
 
 var getMaxElement = function (arr) {
@@ -38,50 +53,39 @@ var getMaxElement = function (arr) {
   return maxElement;
 };
 
-// генерирует цвет со случайной насыщенностью синего
+// получает цвет со случайной насыщенностью синего
 
-var generateColor = function () {
+var getColor = function () {
   var saturation = Math.round(Math.random() * 100);
-  var color = 'hsl(240, ' + saturation + '%, 50%)';
-  return color;
+
+  return 'hsl(240, ' + saturation + '%, 50%)';
 };
+
+//функция отрисовки столбиков гистограммы
+
+var renderBars = function (ctx, names, times) {
+  for (var i = 0; i < names.length; i++) {
+    // определяет максимальное время прохождения игры игроком
+    var maxTime = Math.ceil(getMaxElement(times));
+    //определяет расстояние смещения
+    var shift = Math.round(BAR_HEIGHT - (BAR_HEIGHT * times[i]) / maxTime);
+    // пишет время над столбиком
+    ctx.fillText(Math.ceil(times[i]), CLOUD_X + BAR_GAP + (BAR_WIDTH + BAR_GAP) * i, HYST_START + shift);
+    // условие для изменения цвета столбика
+    ctx.fillStyle = names[i] === 'Вы' ? ctx.fillStyle = 'rgba(255, 0, 0, 1)' : ctx.fillStyle = getColor();
+    // отрисовывает сам столбик
+    ctx.fillRect(CLOUD_X + BAR_GAP + (BAR_WIDTH + BAR_GAP) * i, HYST_START + FONT_GAP + shift, BAR_WIDTH, (BAR_HEIGHT * times[i]) / maxTime);
+    // пишет имя игрока
+    ctx.fillStyle = '#000';
+    ctx.fillText(names[i], CLOUD_X + BAR_GAP + (BAR_WIDTH + BAR_GAP) * i, CLOUD_HEIGHT - FONT_GAP);
+  }
+}
 
 // рендер статистики
 
 window.renderStatistics = function (ctx, names, times) {
-  // отрисовывает облако с тенью
   renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.3)');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#ffffff');
-  // задает стиль тексту
-  ctx.font = '16px PT Mono';
-  ctx.fillStyle = '#000';
-  ctx.textBaseline = 'hanging';
-  // создает массив строк текста и записывает этот текст на холст
-  var textLines = ['Ура, вы победили!', 'Список результатов:'];
-
-  for (var i = 0; i < textLines.length; i++) {
-    ctx.fillText(textLines[i], CLOUD_X + 2 * GAP, CLOUD_Y + 2 * GAP + (FONT_GAP + GAP) * i);
-  }
-  // определяет максимальное время прохождения игры игроком
-  var maxTime = Math.ceil(getMaxElement(times));
-  // отрисовывает гистограмму
-  for (var j = 0; j < names.length; j++) {
-    // высчитывает расстояние смещения
-    var shift = Math.round(BAR_HEIGHT - (BAR_HEIGHT * times[j]) / maxTime);
-
-
-    // пишет время над столбиком
-    ctx.fillText(Math.ceil(times[j]), CLOUD_X + BAR_GAP + (BAR_WIDTH + BAR_GAP) * j, HYST_START + shift);
-    // условие для изменения цвета столбика
-    if (names[j] === 'Вы') {
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-    } else {
-      ctx.fillStyle = generateColor();
-    }
-    // отрисовывает сам столбик
-    ctx.fillRect(CLOUD_X + BAR_GAP + (BAR_WIDTH + BAR_GAP) * j, HYST_START + FONT_GAP + shift, BAR_WIDTH, (BAR_HEIGHT * times[j]) / maxTime);
-    // пишет имя игрока
-    ctx.fillStyle = '#000';
-    ctx.fillText(names[j], CLOUD_X + BAR_GAP + (BAR_WIDTH + BAR_GAP) * j, CLOUD_HEIGHT - FONT_GAP);
-  }
+  renderText(ctx);
+  renderBars(ctx, names, times);
 };
