@@ -75,7 +75,7 @@ var renderBars = function (ctx, names, times) {
     // пишет время над столбиком
     ctx.fillText(Math.ceil(times[i]), CLOUD_X + BAR_GAP + (BAR_WIDTH + BAR_GAP) * i, HYST_START + shift);
     // условие для изменения цвета столбика
-    ctx.fillStyle = names[i] === 'Вы' ? ctx.fillStyle = 'rgba(255, 0, 0, 1)' : ctx.fillStyle = getColor();
+    ctx.fillStyle = names[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : getColor();
     // отрисовывает сам столбик
     ctx.fillRect(CLOUD_X + BAR_GAP + (BAR_WIDTH + BAR_GAP) * i, HYST_START + FONT_GAP + shift, BAR_WIDTH, (BAR_HEIGHT * times[i]) / maxTime);
     // пишет имя игрока
