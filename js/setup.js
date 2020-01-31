@@ -42,6 +42,14 @@ var eyesColors = [
   'green'
 ];
 
+// находит контейнер для похожих магов
+var similarListContainer = document.querySelector('.setup-similar-list');
+
+// находит шаблон похожего мага
+var similarWizardTemplate = document.querySelector('#similar-wizard-template')
+  .content
+  .querySelector('.setup-similar-item');
+
 // получает случайное число в заданном диапазоне
 var getRandomInt = function (min, max) {
   var rand = min + Math.random() * (max + 1 - min);
@@ -75,50 +83,41 @@ var CreateSimilarWizard = function (names, surnames, coatColors, eyeColors) {
 };
 
 // создает массив магов
-var wizards = [];
-
-var createWizardsList = function (count, array) {
+var createWizardsList = function (count) {
+  var result = [];
 
   for (var i = 0; i < count; i++) {
     var wizard = new CreateSimilarWizard(firstNames, lastNames, coatsColors, eyesColors);
-    array.push(wizard);
+    result.push(wizard);
   }
 
-  return wizards;
+  return result;
 };
 
-createWizardsList(SIMILAR_WIZARDS_COUNT, wizards);
-
 // стилизует мага
-var setWizard = function (elem, array, index) {
-  elem.querySelector('.setup-similar-label').textContent = array[index].name;
-  elem.querySelector('.wizard-coat').style.fill = array[index].coatColor;
-  elem.querySelector('.wizard-eyes').style.fill = array[index].eyeColor;
+var setWizard = function (elem, array) {
+  elem.querySelector('.setup-similar-label').textContent = array.name;
+  elem.querySelector('.wizard-coat').style.fill = array.coatColor;
+  elem.querySelector('.wizard-eyes').style.fill = array.eyeColor;
+};
+
+// отрисовывает магов
+var getFragment = function (count) {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < count; i++) {
+    var element = similarWizardTemplate.cloneNode(true);
+    setWizard(element, wizards[i]);
+    fragment.appendChild(element);
+  }
+
+  return fragment;
 };
 
 // показывает необходимые окна
 document.querySelector('.setup').classList.remove('hidden');
 document.querySelector('.setup-similar').classList.remove('hidden');
 
-// находит контейнер для похожих магов
-var similarListContainer = document.querySelector('.setup-similar-list');
-
-// находит шаблон похожего мага
-var similarWizardTemplate = document.querySelector('#similar-wizard-template')
-  .content
-  .querySelector('.setup-similar-item');
-
-// отрисовывает магов
-var renderWizards = function (count, container) {
-  var fragment = document.createDocumentFragment();
-
-  for (var i = 0; i < count; i++) {
-    var element = similarWizardTemplate.cloneNode(true);
-    setWizard(element, wizards, i);
-    fragment.appendChild(element);
-  }
-
-  container.appendChild(fragment);
-};
-
-renderWizards(SIMILAR_WIZARDS_COUNT, similarListContainer);
+var wizards = createWizardsList(SIMILAR_WIZARDS_COUNT);
+var wizardsFragment = getFragment(SIMILAR_WIZARDS_COUNT);
+similarListContainer.appendChild(wizardsFragment);
