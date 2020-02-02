@@ -59,13 +59,13 @@ var setupClose = setup.querySelector('.setup-close');
 var titleInput = setup.querySelector('.setup-user-name');
 
 // находит модель персонажа мага
-var wizardModel = document.querySelector('.setup-wizard');
+var wizardModel = setup.querySelector('.setup-wizard');
+var playerSetup = setup.querySelector('.setup-player');
 var wizardCoat = wizardModel.querySelector('.wizard-coat');
 var wizardEyes = wizardModel.querySelector('.wizard-eyes');
-var wizardFireball = document.querySelector('.setup-fireball-wrap');
+var wizardFireball = playerSetup.querySelector('.setup-fireball-wrap');
 
 // находит скрытые инпуты
-var playerSetup = document.querySelector('.setup-player');
 var coatInput = playerSetup.querySelector('input[name="coat-color"]');
 var eyesInput = playerSetup.querySelector('input[name="eyes-color"]');
 var fireballInput = playerSetup.querySelector('input[name="fireball-color"]');
@@ -142,24 +142,15 @@ var getFragment = function (count) {
   return fragment;
 };
 
-// изменяет цвет и знчение атрибута скрытого инпута
-var changeColor = function (array, input) {
-  var color = array[getRandomInt(0, getMaxIndex(array))];
-  input.value = color;
-
-  return color;
+// получает цвет
+var getColor = function (array) {
+  return array[getRandomInt(0, getMaxIndex(array))];
 };
 
 // обработчики событий
-var onPopupEscPress = function (evt) {
-  if (evt.key === ESC_KEY) {
+var onEscPress = function (evt) {
+  if (evt.key === ESC_KEY && evt.target !== titleInput) {
     closePopup();
-  }
-};
-
-var onInputEscStopProp = function (evt) {
-  if (evt.key === ESC_KEY) {
-    evt.stopPropagation();
   }
 };
 
@@ -175,16 +166,34 @@ var onSetupCloseEnterPress = function (evt) {
   }
 };
 
+var onWizardFireballClick = function () {
+  var color = getColor(fireballColors);
+  fireballInput.value = color;
+  wizardFireball.style.backgroundColor = color;
+};
+
+var onWizardCoatClick = function () {
+  var color = getColor(coatsColors);
+  coatInput.value = color;
+  wizardCoat.style.fill = color;
+};
+
+var onWizardEyesClick = function () {
+  var color = getColor(eyesColors);
+  eyesInput.value = color;
+  wizardEyes.style.fill = color;
+};
+
 // открывает окно настроек персонажа
 var openPopup = function () {
   setup.classList.remove('hidden');
-  document.addEventListener('keydown', onPopupEscPress);
+  document.addEventListener('keydown', onEscPress);
 };
 
 // закрывает окно настроек персонажа
 var closePopup = function () {
   setup.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscPress);
+  document.removeEventListener('keydown', onEscPress);
 };
 
 setupOpen.addEventListener('click', function () {
@@ -203,22 +212,10 @@ setupClose.addEventListener('keydown', function (evt) {
   onSetupCloseEnterPress(evt);
 });
 
-titleInput.addEventListener('keydown', function (evt) {
-  onInputEscStopProp(evt);
-});
-
 // обработчики событий на модели мага
-wizardCoat.addEventListener('click', function () {
-  wizardCoat.style.fill = changeColor(coatsColors, coatInput);
-});
-
-wizardEyes.addEventListener('click', function () {
-  wizardEyes.style.fill = changeColor(eyesColors, eyesInput);
-});
-
-wizardFireball.addEventListener('click', function () {
-  wizardFireball.style.backgroundColor = changeColor(fireballColors, fireballInput);
-});
+wizardCoat.addEventListener('click', onWizardCoatClick);
+wizardEyes.addEventListener('click', onWizardEyesClick);
+wizardFireball.addEventListener('click', onWizardFireballClick);
 
 // действия
 setup.querySelector('.setup-similar').classList.remove('hidden');
