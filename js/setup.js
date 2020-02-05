@@ -143,7 +143,7 @@ var getFragment = function (count) {
 };
 
 // получает цвет
-var getColor = function (array) {
+var getWizardItemsColor = function (array) {
   return array[getRandomInt(0, getMaxIndex(array))];
 };
 
@@ -167,19 +167,19 @@ var onSetupCloseEnterPress = function (evt) {
 };
 
 var onWizardFireballClick = function () {
-  var color = getColor(fireballColors);
+  var color = getWizardItemsColor(fireballColors);
   fireballInput.value = color;
   wizardFireball.style.backgroundColor = color;
 };
 
 var onWizardCoatClick = function () {
-  var color = getColor(coatsColors);
+  var color = getWizardItemsColor(coatsColors);
   coatInput.value = color;
   wizardCoat.style.fill = color;
 };
 
 var onWizardEyesClick = function () {
-  var color = getColor(eyesColors);
+  var color = getWizardItemsColor(eyesColors);
   eyesInput.value = color;
   wizardEyes.style.fill = color;
 };
