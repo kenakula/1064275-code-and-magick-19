@@ -41,6 +41,28 @@
     }
   };
 
+  var getColor = function () {
+    var saturation = Math.round(Math.random() * 100);
+
+    return 'hsl(240, ' + saturation + '%, 50%)';
+  };
+
+  var getMaxElement = function (arr) {
+    if (arr.length === 1) {
+      return arr[0];
+    }
+
+    var maxElement = arr[0];
+
+    for (var i = 1; i < arr.length; i++) {
+      if (arr[i] > maxElement) {
+        maxElement = arr[i];
+      }
+    }
+
+    return maxElement;
+  };
+
   window.util = {
     getMaxIndex: getMaxIndex,
     getRandomInt: getRandomInt,
@@ -49,6 +71,8 @@
     getWizardItemsColor: getWizardItemsColor,
     isEnterEvent: isEnterEvent,
     isEscEvent: isEscEvent,
+    getColor: getColor,
+    getMaxElement: getMaxElement,
   };
 
 })();
