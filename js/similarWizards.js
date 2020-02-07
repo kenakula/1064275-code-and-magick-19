@@ -84,9 +84,7 @@
   };
 
   var wizards = createWizardsList(SIMILAR_WIZARDS_COUNT);
-
   var wizardsFragment = getFragment(SIMILAR_WIZARDS_COUNT);
-
   similarListContainer.appendChild(wizardsFragment);
 
 })();
