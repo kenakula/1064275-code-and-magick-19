@@ -9,9 +9,15 @@
   var setupClose = setup.querySelector('.setup-close');
   var titleInput = setup.querySelector('.setup-user-name');
 
+  var resetPopupPosition = function () {
+    setup.style.top = '';
+    setup.style.left = '';
+  };
+
   var onEscPress = function (evt) {
     if (evt.key === ESC_KEY && evt.target !== titleInput) {
       closePopup();
+      resetPopupPosition();
     }
   };
 
@@ -24,6 +30,7 @@
   var onSetupCloseEnterPress = function (evt) {
     if (evt.key === ENTER_KEY) {
       closePopup();
+      resetPopupPosition();
     }
   };
 
@@ -47,6 +54,7 @@
 
   setupClose.addEventListener('click', function () {
     closePopup();
+    resetPopupPosition();
   });
 
   setupClose.addEventListener('keydown', function (evt) {
