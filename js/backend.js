@@ -6,28 +6,28 @@
   var RESPONSE_TYPE = 'json';
   var DOWNLOAD_LINK = 'https://js.dump.academy/code-and-magick/data';
   var UPLOAD_LINK = 'https://js.dump.academy/code-and-magick';
-  var responseCode = {
+  var ResponseCode = {
     OK: 200,
-    notFound: 404,
-    Unavailable: 503,
-    GatewayTimeout: 504,
+    NOT_FOUND: 404,
+    UNAVAILABLE: 503,
+    GATEWAY_TIMEOUT: 504,
   };
   window.backend = {};
 
   var responseHandler = function (xhr, onLoad, onError) {
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
-        case responseCode.OK:
+        case ResponseCode.OK:
           onLoad(xhr.response);
           console.log(xhr.status);
           break;
-        case responseCode.notFound:
+        case ResponseCode.NOT_FOUND:
           onError('Запрашиваемыe данные не существуют!');
           break;
-        case responseCode.Unavailable:
+        case ResponseCode.UNAVAILABLE:
           onError('Ошибка сервера, побробуйте снова позже');
           break;
-        case responseCode.GatewayTimeout:
+        case ResponseCode.GATEWAY_TIMEOUT:
           onError('Слишком долгое ожидание ответа сервера, возможно медленное интернет-соединение');
           break;
         default:
