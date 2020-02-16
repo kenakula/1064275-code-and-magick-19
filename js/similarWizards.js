@@ -24,6 +24,7 @@
 
     for (var i = 0; i < SIMILAR_WIZARDS_COUNT; i++) {
       var getRandomWizard = wizards[window.util.getRandomInt(0, window.util.getMaxIndex(wizards))];
+
       fragment.appendChild(renderWizard(getRandomWizard));
     }
 
