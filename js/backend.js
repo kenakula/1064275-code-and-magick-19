@@ -6,6 +6,10 @@
   var RESPONSE_TYPE = 'json';
   var DOWNLOAD_LINK = 'https://js.dump.academy/code-and-magick/data';
   var UPLOAD_LINK = 'https://js.dump.academy/code-and-magick';
+  var Method = {
+    GET: 'GET',
+    POST: 'POST',
+  };
   var ResponseCode = {
     OK: 200,
     NOT_FOUND: 404,
@@ -44,25 +48,23 @@
     });
   };
 
-  window.backend.load = function (onLoad, onError) {
+  var createXhr = function (method, link, onSuccess, onError, data) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = RESPONSE_TYPE;
     xhr.timeout = TIMEOUT_IN_MS;
 
-    responseHandler(xhr, onLoad, onError);
+    responseHandler(xhr, onSuccess, onError);
 
-    xhr.open('GET', DOWNLOAD_LINK);
-    xhr.send();
+    xhr.open(method, link);
+    xhr.send(data);
+  };
+
+  window.backend.load = function (onLoad, onError) {
+    createXhr(Method.GET, DOWNLOAD_LINK, onLoad, onError);
   };
 
   window.backend.save = function (data, onLoad, onError) {
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = RESPONSE_TYPE;
-
-    responseHandler(xhr, onLoad, onError);
-
-    xhr.open('POST', UPLOAD_LINK);
-    xhr.send(data);
+    createXhr(Method.POST, UPLOAD_LINK, onLoad, onError, data);
   };
 
 })();
