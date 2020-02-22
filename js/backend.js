@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 
 (function () {
@@ -23,7 +22,6 @@
       switch (xhr.status) {
         case ResponseCode.OK:
           onLoad(xhr.response);
-          console.log(xhr.status);
           break;
         case ResponseCode.NOT_FOUND:
           onError('Запрашиваемыe данные не существуют!');
@@ -48,23 +46,27 @@
     });
   };
 
-  var createXhr = function (method, link, onSuccess, onError, data) {
+  var createXhr = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = RESPONSE_TYPE;
     xhr.timeout = TIMEOUT_IN_MS;
-
     responseHandler(xhr, onSuccess, onError);
 
-    xhr.open(method, link);
-    xhr.send(data);
+    return xhr;
   };
 
   window.backend.load = function (onLoad, onError) {
-    createXhr(Method.GET, DOWNLOAD_LINK, onLoad, onError);
+    var xhr = createXhr(onLoad, onError);
+
+    xhr.open(Method.GET, DOWNLOAD_LINK);
+    xhr.send();
   };
 
   window.backend.save = function (data, onLoad, onError) {
-    createXhr(Method.POST, UPLOAD_LINK, onLoad, onError, data);
+    var xhr = createXhr(onLoad, onError);
+
+    xhr.open(Method.POST, UPLOAD_LINK);
+    xhr.send(data);
   };
 
 })();
