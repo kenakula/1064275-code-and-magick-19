@@ -10,6 +10,9 @@
   var getRank = function (wizard) {
     var rank = 0;
 
+    if (wizard.colorCoat === coatColor && wizard.colorEyes === eyesColor) {
+      rank += 3;
+    }
     if (wizard.colorCoat === coatColor) {
       rank += 2;
     }
@@ -42,15 +45,15 @@
     window.render(wizards.sort(wizardSortComparator));
   };
 
-  window.wizard.onEyesChange = function (color) {
+  window.wizard.onEyesChange = window.debounce(function (color) {
     eyesColor = color;
     updateWizards();
-  };
+  });
 
-  window.wizard.onCoatChange = function (color) {
+  window.wizard.onCoatChange = window.debounce(function (color) {
     coatColor = color;
     updateWizards();
-  };
+  });
 
   var successHandler = function (data) {
     wizards = data;
