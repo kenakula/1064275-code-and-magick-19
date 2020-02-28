@@ -21,10 +21,6 @@
     return firstName + ' ' + lastName;
   };
 
-  var getRandomColor = function (colors) {
-    return colors[getRandomInt(0, getMaxIndex(colors))];
-  };
-
   var getWizardItemsColor = function (array) {
     return array[getRandomInt(0, getMaxIndex(array))];
   };
@@ -67,7 +63,6 @@
     getMaxIndex: getMaxIndex,
     getRandomInt: getRandomInt,
     getRandomName: getRandomName,
-    getRandomColor: getRandomColor,
     getWizardItemsColor: getWizardItemsColor,
     isEnterEvent: isEnterEvent,
     isEscEvent: isEscEvent,
