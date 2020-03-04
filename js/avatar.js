@@ -7,13 +7,17 @@
   var preview = document.querySelector('.setup-user-pic');
   var setupOpenIcon = document.querySelector('.setup-open-icon');
 
+  var fileMatches = function (file) {
+    return FILE_TYPES.some(function (it) {
+      return file.endsWith(it);
+    });
+  };
+
   fileChooser.addEventListener('change', function () {
     var file = fileChooser.files[0];
     var fileName = file.name.toLowerCase();
 
-    var matches = FILE_TYPES.some(function (it) {
-      return fileName.endsWith(it);
-    });
+    var matches = fileMatches(fileName);
 
     if (matches) {
       var reader = new FileReader();
